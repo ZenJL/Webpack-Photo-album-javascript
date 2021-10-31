@@ -43,7 +43,7 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         const res = await loginUser('admin@gmail.com', "123456");
         window.sessionStorage.setItem('token', res.data.token);
-        window.location.href = './index.html';
+        window.location.href = './index.html?page=1';
     } catch(error) {
         const showMessage = error.response.data.msg;
         showErrorText.innerHTML = showMessage;

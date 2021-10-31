@@ -15,12 +15,10 @@ const logoutBtn = document.getElementById('btn-logout');
 const addBtn = document.getElementById('btn-add');
 const photoCardData = document.getElementById('photoCards');
 const pagination = document.getElementById('idPagination');
-let total = 0;
 
 addBtn.addEventListener('click', (e) => {
     window.location.href = './photo-add.html';
 })
-
 
 logoutBtn.addEventListener('click', (e) => {
     sessionStorage.removeItem('token');
@@ -29,13 +27,14 @@ logoutBtn.addEventListener('click', (e) => {
 
 
 async function fetchPhotos(page = 1) {
+    const url = window.location.search;
+    const params = new URLSearchParams(url);
+    const pageParam = params.get('page') || page;
+
     try {
-        const res = await getListPhotos(token, page);
+        const res = await getListPhotos(token, pageParam);
         const photoList = res.data.data;
         const numsPage = Math.round(res.data.total / res.data.limit);
-
-        console.log('listPagination: ', numsPage)
-
         const htmlOutput = photoList.map((photo) => {
             return `
                 <div id="${photo._id}" class="card">
@@ -58,10 +57,7 @@ async function fetchPhotos(page = 1) {
                 </div>
             `
         })
-
         rennderPagination(numsPage);
-
-
         photoCardData.innerHTML = htmlOutput.join('');
     } catch (error) {
         // window.location.href = '/login.html'
@@ -85,8 +81,16 @@ function rennderPagination(numsPage) {
     const paginationLi = document.querySelectorAll('.paginationLi')
     paginationLi.forEach((pagi, index) => {
         pagi.addEventListener('click', () => {
-            window.scrollTo(0,0);
-            fetchPhotos(index + 1);
+            // window.location.replace(`/index.html?page=${index + 1}`);
+            const urlParams = new URL( window.location.href);
+            const search_params = urlParams.searchParams;
+            // new value of "id" is set to "101"
+            search_params.set('page', index + 1);
+            // change the search property of the main url
+            urlParams.search = search_params.toString();
+            // the new url string
+            const new_url = urlParams.toString();
+            window.location.href = new_url; // go to new url -> push new url into stack history
         })
     })
 }
