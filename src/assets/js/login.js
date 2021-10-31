@@ -10,6 +10,8 @@ import { loginUser } from "./api";
 const loginForm = document.getElementById('loginForm');
 const email = document.getElementById('email_address');
 const password = document.getElementById('password');
+const showErrorText = document.getElementById('login-error-mess');
+const loginError = document.getElementById('login-error');
 
 // loginForm.addEventListener('submit', (e) => {
 //     e.preventDefault();
@@ -18,13 +20,36 @@ const password = document.getElementById('password');
     
 // })
 
+// email.addEventListener('change', e => {
+//     e.preventDefault();
+//     if( e.target.value === ''){
+//         setErrorFor(email,'Plese fill in your email'); 
+//         return;
+//     } else {
+//         showErrorText.innerHTML = '';
+//     }
+    
+//     if(!isEmail( e.target.value)){
+//         setErrorFor(email,'Plese fill in your email'); 
+//         return;
+//     };
+// })
+
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const isValidate = isValidateForm();
+    if(!isValidate) return;
 
-    const showErrorText = document.getElementById('login-error-mess');
-    const loginError = document.getElementById('login-error');
-    
-    checkInput();
+    try {
+        const res = await loginUser('admin@gmail.com', "123456");
+        window.sessionStorage.setItem('token', res.data.token);
+        window.location.href = './index.html';
+    } catch(error) {
+        const showMessage = error.response.data.msg;
+        showErrorText.innerHTML = showMessage;
+        loginError.classList.add('error');
+    }
+
 
     // try {
     //     const res = await loginUser('adm2in@gmail.com', "123456");
@@ -39,50 +64,32 @@ loginForm.addEventListener('submit', async (e) => {
     // }
 })
 
-async function checkInput(){
-    
+function isValidateForm(){
     // trigger
-    let execute = false;
+    // let execute = false;
 
     // get values from the inputs
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
 
-
     // check empty input
     if(emailValue === ''){
-        execute = false;
-
-        setErrorFor(email,'Plese fill in your email'); 
+        setErrorFor(email, 'Plese fill in your email'); 
+        return false;
     }
-    else if(!isEmail(emailValue)){
-        execute = false;
-
-        setErrorFor(email,'Email is not valid'); 
+    
+    if(!isEmail(emailValue)){
+        setErrorFor(email,'Plese fill correct email'); 
+        return false;
     };
 
     if(passwordValue === ''){
-        execute = false;
-
         setErrorFor(password,'Plese fill in your password'); 
+        return false;
     };
 
-    
-    if(execute === true){
-        await addUser(avatar, firstNameValue, lastNameValue, emailValue, role, password);
-    }
+    return true;
 
-    try {
-        const res = await loginUser('admin@gmail.com', "123456");
-        window.sessionStorage.setItem('token', res.data.token);
-        console.log('success: ', res);
-        // window.location.href = './index.html';
-    } catch(error) {
-        console.log('throw u error: ', error.response.data);
-        const showMessage = error.response.data.msg;
-        showErrorText.innerHTML = showMessage;
-        loginError.classList.add('error');
-    }
 };
 
 
@@ -115,6 +122,7 @@ function setErrorFor(input, message){
             };
 
         }
+        
     });
 };
 

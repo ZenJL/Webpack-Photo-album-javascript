@@ -2,7 +2,7 @@
 import '../css/reset.css';
 import '../css/index.css';
 // =======================
-import { checkAuth, getListPhotos } from "./api";
+import { getListPhotos } from "./api";
 
 // const token = window.sessionStorage.getItem('token');
 
@@ -14,7 +14,8 @@ const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjEwOGM0
 const logoutBtn = document.getElementById('btn-logout');
 const addBtn = document.getElementById('btn-add');
 const photoCardData = document.getElementById('photoCards');
-
+const pagination = document.getElementById('idPagination');
+let total = 0;
 
 addBtn.addEventListener('click', (e) => {
     window.location.href = './photo-add.html';
@@ -27,17 +28,13 @@ logoutBtn.addEventListener('click', (e) => {
 });
 
 
-async function checkAuthenticate() {
-    // console.log('toekn ne: ', token);
+async function fetchPhotos(page = 1) {
     try {
-        // const checkTooken = await checkAuth(token);     // why error???
-        // console.log('u need res here: ', checkTooken);
+        const res = await getListPhotos(token, page);
+        const photoList = res.data.data;
+        const numsPage = Math.round(res.data.total / res.data.limit);
 
-        // load api get photo list
-        const responsePhotoData = await getListPhotos(token);
-        console.log('u need here: ', responsePhotoData);
-        const photoList = responsePhotoData.data.data
-
+        console.log('listPagination: ', numsPage)
 
         const htmlOutput = photoList.map((photo) => {
             return `
@@ -47,30 +44,53 @@ async function checkAuthenticate() {
                     </div>
                     <div class="card-content">
                         <div class="card-text">${photo.description}</div>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="card-group-btn">
-                            <a href="./photo-detail.html" class="btn btn-view" onclick="sessionStorage.setItem('id','${photo._id}')">
-                            View
-                            </a>
-                            <a href="" class="btn btn-edit">Edit</a>
+                        <div class="card-bottom">
+                            <div class="card-group-btn">
+                                <a href="./photo-detail.html" class="btn btn-view" onclick="sessionStorage.setItem('id','${photo._id}')">
+                                View
+                                </a>
+                                <a href="" class="btn btn-edit">Edit</a>
+                            </div>
+                            <div class="card-time">9 mins</div>
                         </div>
-                        <div class="card-time">9 mins</div>
                     </div>
+                    
                 </div>
-
-
             `
         })
 
-        photoCardData.innerHTML = htmlOutput.join('')
+        rennderPagination(numsPage);
+
+
+        photoCardData.innerHTML = htmlOutput.join('');
     } catch (error) {
         // window.location.href = '/login.html'
         console.log(error.response);
     }
 }
 
-checkAuthenticate();
+
+fetchPhotos(1);
+
+function rennderPagination(numsPage) {
+    pagination.innerHTML = '';
+    Array.from(Array(numsPage).keys()).forEach(item => {
+        pagination.innerHTML += `
+            <li class="pagination paginationLi">
+                <div href="" class="pagination-link">${item + 1}</div>
+            </li>
+        `
+    })
+
+    const paginationLi = document.querySelectorAll('.paginationLi')
+    paginationLi.forEach((pagi, index) => {
+        pagi.addEventListener('click', () => {
+            window.scrollTo(0,0);
+            fetchPhotos(index + 1);
+        })
+    })
+}
+
 
 
 
