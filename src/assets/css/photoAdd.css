@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700&display=swap');
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 1.6rem;
+    font-weight: normal;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5;
+    margin: 0 auto;
+}
+
+input,
+textarea,
+select,
+button {
+    outline: none;
+    font-size: 1.6rem;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+.wrapper {
+    margin: 0 auto;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header{
+    margin: 5rem 0;
+    align-self: center;
+    font-size: 3.4rem;
+    font-weight: 300;
+}
+
+.addPhotoForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.addPhotoForm-group {
+    margin-bottom: 2rem;
+}
+
+.addPhotoForm-label {
+    display: block;
+    margin-bottom: 1.2rem;
+}
+
+#category-value{
+    min-width: 20rem;
+}
+
+.addPhotoForm-input {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    font-size: 1.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.addPhotoForm-input:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}
+
+.btn {
+    align-self: end;
+    margin-top: 2.2rem;
+    display: block;
+    padding: 8px 12px;
+    border: 1px solid;
+    border-radius: 4px;
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    font-weight: 100;
+    cursor: pointer;
+}

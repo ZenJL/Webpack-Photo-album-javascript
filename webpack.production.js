@@ -2,12 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         main: './src/assets/js/main.js',
         login: './src/assets/js/login.js',
-        signup: './src/assets/js/signup.js',
+        register: './src/assets/js/signup.js',
         photoAdd: './src/assets/js/photoAdd.js',
         photoDetail: './src/assets/js/photoDetail.js'
     },
@@ -29,39 +30,31 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin(),
+        new new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: './src/index.html',
+            template: 'src/index.html',
             chunks: ['main']
         }),
         new HtmlWebpackPlugin({
             filename: 'photo-add.html',
-            template: './src/photo-add.html',
+            template: 'src/photo-add.html',
             chunks: ['photoAdd']
         }),
         new HtmlWebpackPlugin({
             filename: 'photo-detail.html',
-            template: './src/photo-detail.html',
+            template: 'src/photo-detail.html',
             chunks: ['photoDetail']
         }),
         new HtmlWebpackPlugin({
             filename: 'login.html',
-            template: './src/login.html',
+            template: 'src/login.html',
             chunks: ['login']
         }),
         new HtmlWebpackPlugin({
             filename: 'signup.html',
-            template: './src/signup.html',
+            template: 'src/signup.html',
             chunks: ['signup']
         }),
     ],
-    devtool: "source-map",
-    devServer: {
-        static: {
-            directory: path.join(__dirname, 'build'),
-        },
-        compress: true,
-        port: 9000
-    }
 }
