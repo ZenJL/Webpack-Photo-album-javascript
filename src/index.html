@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <a href="./login.html" id="btn-logout" class="btn logout">Log out</a>
+        <a id="btn-logout" class="btn logout">Log out</a>
         <header class="header">
             <h2 class="header-title">Album example</h2>
             <div class="header-description">
@@ -21,7 +21,7 @@
             Add Photo
         </a>
         <main class="main">
-            <div id="photoCards" class="cards">
+            <div id="photoCards" class="cards-gallery">
                 <!-- <div class="card">
                     <div class="card-top">
                         <img src="https://images.unsplash.com/photo-1621130201571-e0e6d2a87718?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80" alt="Image Cap" class="card-image">
@@ -62,7 +62,25 @@
                 
             </div>
         </main>
-        <div class="pagination">
+        <div class="pagination-buttons">
+            <div class="container">
+                <div id="previous-page" class="page-btn previous-page">
+                    <div class="pagination-link">Previous</div>
+                </div>
+                <ul id="idPagination" class="paginations">
+                </ul>
+                <div id="next-page" class="page-btn next-page">
+                    <div class="pagination-link">Next</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <a href="#" class="btn toTopPage">Back to Top</a>
+
+        <!-- backup -->
+        <!-- <div class="pagination">
             <a href="" class="pagination-link">Previous</a>
         </div>
         <ul id="idPagination" class="paginations">
@@ -70,7 +88,19 @@
         <div class="pagination">
             <a href="" class="pagination-link">Next</a>
         </div>
-        <a href="#" class="btn toTopPage">Back to Top</a>
+        <a href="#" class="btn toTopPage">Back to Top</a> -->
+
+
+        <!-- stay remain in case collapse -->
+        <!-- <div class="pagination">
+            <a href="" class="pagination-link">Previous</a>
+        </div>
+        <ul id="idPagination" class="paginations">
+        </ul>
+        <div class="pagination">
+            <a href="" class="pagination-link">Next</a>
+        </div>
+        <a href="#" class="btn toTopPage">Back to Top</a> -->
     </div>
     
 </body>
