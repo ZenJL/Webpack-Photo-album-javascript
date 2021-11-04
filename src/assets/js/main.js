@@ -21,15 +21,22 @@ logoutBtn.addEventListener('click', (e) => {
 });
 
 
+function initPage() {
+    if(!token) {
+        window.location.href = '/login.html';
+        return
+    };
+    fetchPhotos(1);
+}
+
+initPage();
+
 async function fetchPhotos(page = 1) {
     const url = window.location.search;
     const params = new URLSearchParams(url);
     const pageParam = params.get('page') || page;
 
     try {
-        // const resAuthen = await checkAuth(token);
-        // console.log('u need 222222: ', resAuthen);
-
         const res = await getListPhotos(token, pageParam, 10);
         const photoList = res.data.data;
         console.log('u queeeee: ', res.data);
@@ -69,7 +76,6 @@ async function fetchPhotos(page = 1) {
 }
 
 
-fetchPhotos(1);
 
 function rennderPagination(numsPage, pageParam) {
     pagination.innerHTML = '';
