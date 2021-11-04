@@ -2,23 +2,18 @@
 import '../css/reset.css';
 import '../css/index.css';
 // =======================
-import { getListPhotos } from "./api";
-
-// const token = window.sessionStorage.getItem('token');
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjEwOGM0YWVjYmJiMzYzMTkzNzlkOTZiIiwiZmlyc3ROYW1lIjoiVG9ueSIsImxhc3ROYW1lIjoiTmd1eWVuIiwiYXZhdGFyIjoiaHR0cHM6Ly9jZG4uZmFrZXJjbG91ZC5jb20vYXZhdGFycy9NYW5pa1JhdGhlZV8xMjguanBnIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM1NjY4MjUwLCJleHAiOjE2MzU3MDQyNTB9.71Iw6_TGdFtAqrhEYhpzD5EwlG98wY3FWEUtO1wekhI";
-
-// const a = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjEwOGM0YWVjYmJiMzYzMTkzNzlkOTZiIiwiZmlyc3ROYW1lIjoiVG9ueSIsImxhc3ROYW1lIjoiTmd1eWVuIiwiYXZhdGFyIjoiaHR0cHM6Ly9jZG4uZmFrZXJjbG91ZC5jb20vYXZhdGFycy9NYW5pa1JhdGhlZV8xMjguanBnIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjM1NjY4NTg4LCJleHAiOjE2MzU3MDQ1ODh9.X4FcKgmuUWb96mrUJMTfDe4YCxLt1lbtOw7hf5F-nk8'
+import { checkAuth, getListPhotos } from "./api";
 
 
+const token = window.sessionStorage.getItem("token");
+console.log('hello 23123: ', token);
 const logoutBtn = document.getElementById('btn-logout');
-const addBtn = document.getElementById('btn-add');
+// const addBtn = document.getElementById('btn-add');
 const photoCardData = document.getElementById('photoCards');
 const pagination = document.getElementById('idPagination');
+const btnPre = document.getElementById('previous-page');
+const btnNext = document.getElementById('next-page');
 
-addBtn.addEventListener('click', (e) => {
-    window.location.href = './photo-add.html';
-})
 
 logoutBtn.addEventListener('click', (e) => {
     sessionStorage.removeItem('token');
@@ -32,9 +27,14 @@ async function fetchPhotos(page = 1) {
     const pageParam = params.get('page') || page;
 
     try {
-        const res = await getListPhotos(token, pageParam);
+        // const resAuthen = await checkAuth(token);
+        // console.log('u need 222222: ', resAuthen);
+
+        const res = await getListPhotos(token, pageParam, 10);
         const photoList = res.data.data;
-        const numsPage = Math.round(res.data.total / res.data.limit);
+        console.log('u queeeee: ', res.data);
+        const numsPage = Math.ceil(res.data.total / res.data.limit);
+        console.log('uneed herre noood numsPage: ', numsPage);       // this's a number, u need to create a Array to store from 1 to that value and use .map() to display HTML. So, create a aaray with number
         const htmlOutput = photoList.map((photo) => {
             return `
                 <div id="${photo._id}" class="card">
@@ -57,28 +57,71 @@ async function fetchPhotos(page = 1) {
                 </div>
             `
         })
-        rennderPagination(numsPage);
         photoCardData.innerHTML = htmlOutput.join('');
+        rennderPagination(numsPage, pageParam);
+        // console.log('star war111: ', pageParam);
+        // console.log('star war112: ', typeof(pageParam));
+        
     } catch (error) {
         // window.location.href = '/login.html'
-        console.log(error.response);
+        console.log(error);
     }
 }
 
 
 fetchPhotos(1);
 
-function rennderPagination(numsPage) {
+function rennderPagination(numsPage, pageParam) {
     pagination.innerHTML = '';
-    Array.from(Array(numsPage).keys()).forEach(item => {
+    // creat array store numspage and loop foreach
+    const pageArray = Array.from(Array(numsPage).keys());
+
+    // Array.from(Array(numsPage).keys()).forEach(item => {
+    pageArray.forEach(item => {
         pagination.innerHTML += `
-            <li class="pagination paginationLi">
+            <li id="mark-page-${item+1}" class="pagination paginationLi">
                 <div href="" class="pagination-link">${item + 1}</div>
             </li>
         `
     })
+    
 
-    const paginationLi = document.querySelectorAll('.paginationLi')
+    let pageIndex = parseInt(pageParam);
+    console.log('star war113: ', pageIndex);
+    console.log('star war114: ', typeof(pageIndex));
+    console.log('pageArray herrerere: ', pageArray);
+    console.log('hmmmm: ', pageArray[1]);
+    console.log('hmmmm2222: ', pageArray.length);
+    console.log('hmmmm2222: ', typeof(pageArray.length));
+    if(pageIndex === pageArray[1]){
+        btnPre.classList.add('btn-disable');
+    }
+    
+    if(pageIndex === pageArray[pageArray.length]){
+        btnNext.classList.add('btn-disable');
+    }
+
+    btnPre.addEventListener('click', () => {
+        pageIndex--;
+        window.location.replace(`/index.html?page=${pageIndex}`);
+        fetchPhotos(pageIndex);
+    });
+
+    btnNext.addEventListener('click', () => {
+        pageIndex++;
+        window.location.replace(`/index.html?page=${pageIndex}`);
+        fetchPhotos(pageIndex);
+    });
+    const currPage = document.getElementById(`mark-page-${pageParam}`);
+    const removeAllOtherActivePage = document.querySelectorAll('pagination');
+    removeAllOtherActivePage.forEach(page => {
+        page.classList.remove('active-page');
+    });
+    currPage.classList.add('active-page');
+
+
+    // manipulate add event click to trigger by DOM
+    const paginationLi = document.querySelectorAll('paginationLi')
     paginationLi.forEach((pagi, index) => {
         pagi.addEventListener('click', () => {
             // window.location.replace(`/index.html?page=${index + 1}`);
@@ -93,8 +136,22 @@ function rennderPagination(numsPage) {
             window.location.href = new_url; // go to new url -> push new url into stack history
         })
     })
+
+
+    
+
 }
 
 
 
 
+// async function getUser() {
+//     try {
+//         const response = await axios.get('/user?ID=12345');
+//         console.log(response);
+//     } catch(error) {
+//         console.error(error);
+//     }
+// };
+
+// getUser();

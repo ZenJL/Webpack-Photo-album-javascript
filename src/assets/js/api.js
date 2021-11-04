@@ -27,8 +27,8 @@ export const checkAuth = async (token) => {
         hearders: {
             'Content-Type': 'application/json',
             'x-auth-token': token
-        }
-    });
+        },
+    })
 };
 
 
