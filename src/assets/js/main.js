@@ -78,6 +78,11 @@ async function fetchPhotos(page = 1) {
 
 
 function rennderPagination(numsPage, pageParam) {
+    const url = window.location.search;
+    const params = new URLSearchParams(url);
+    const pageParamAbc = params.get('page') || page;
+
+
     pagination.innerHTML = '';
     // creat array store numspage and loop foreach
     const pageArray = Array.from(Array(numsPage).keys());
@@ -90,7 +95,7 @@ function rennderPagination(numsPage, pageParam) {
             </li>
         `
     })
-    
+
 
     let pageIndex = parseInt(pageParam);
     console.log('star war113: ', pageIndex);
@@ -99,11 +104,12 @@ function rennderPagination(numsPage, pageParam) {
     console.log('hmmmm: ', pageArray[1]);
     console.log('hmmmm2222: ', pageArray.length);
     console.log('hmmmm2222: ', typeof(pageArray.length));
-    if(pageIndex === pageArray[1]){
+
+    if(pageIndex === 1){
         btnPre.classList.add('btn-disable');
     }
     
-    if(pageIndex === pageArray[pageArray.length]){
+    if(pageIndex === pageArray.length){
         btnNext.classList.add('btn-disable');
     }
 
@@ -127,9 +133,10 @@ function rennderPagination(numsPage, pageParam) {
 
 
     // manipulate add event click to trigger by DOM
-    const paginationLi = document.querySelectorAll('paginationLi')
+    const paginationLi = document.querySelectorAll('.paginationLi')
     paginationLi.forEach((pagi, index) => {
         pagi.addEventListener('click', () => {
+            console.log('paginationLi')
             // window.location.replace(`/index.html?page=${index + 1}`);
             const urlParams = new URL( window.location.href);
             const search_params = urlParams.searchParams;

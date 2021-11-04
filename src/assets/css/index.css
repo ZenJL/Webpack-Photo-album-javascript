@@ -19,7 +19,14 @@ body {
 
 main {
   max-width: 1220px;
+  width: 1220px;
   padding: 0 15px;
+}
+
+@media (max-width: 1220px) {
+  main {
+    width: 100%;
+  }
 }
 
 input,
@@ -49,7 +56,6 @@ img {
   justify-content: center;
   align-items: center;
 }
-
 
 .header {
   display: flex;
@@ -94,7 +100,6 @@ img {
   flex-wrap: wrap;
   margin-left: calc(-1 * var(--card-spacing));
   margin-bottom: calc(-1 * var(--card-spacing));
-  min-width: 80.6rem;
 }
 
 .card {
@@ -111,7 +116,7 @@ img {
   flex-shrink: 0;
 }
 
-.card-top{
+.card-top {
   flex: 1;
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -200,7 +205,7 @@ img {
   text-align: center;
 }
 
-.pagination-link:hover{
+.pagination-link:hover {
   background-color: #c7c2c2;
 }
 
@@ -222,7 +227,7 @@ img {
   cursor: pointer;
 }
 
-.pagination-buttons{
+.pagination-buttons {
   align-self: end;
   margin: 3rem 0;
 }
@@ -234,7 +239,7 @@ img {
   gap: 4px;
 }
 
-.previous-page{
+.previous-page {
   border: 1px solid #ccc;
   background-color: #fff;
   display: flex;
@@ -247,7 +252,7 @@ img {
   border-radius: 4px;
 }
 
-.next-page{
+.next-page {
   border: 1px solid #ccc;
   background-color: #fff;
   display: flex;
@@ -260,18 +265,18 @@ img {
   border-radius: 4px;
 }
 
-.active-page{
+.active-page {
   background-color: #5fd6df;
   color: #fff;
 }
 
-.btn-disable{
+.btn-disable {
   opacity: 0.3;
   cursor: not-allowed;
   pointer-events: none;
   user-select: none;
 }
 
-.btn-disable .pagination-link{
+.btn-disable .pagination-link {
   color: #aaa;
 }
